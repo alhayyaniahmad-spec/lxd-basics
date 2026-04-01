@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>أساسيات تصميم خبرة التعلم | LXD</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080B14;--cd:#121829;--gb:rgba(255,255,255,.06);--ag:#D4A847;--agd:rgba(212,168,71,.15);--at:#2DD4A8;--atd:rgba(45,212,168,.12);--ab:#4A90D9;--abd:rgba(74,144,217,.12);--ap:#9B6DFF;--apd:rgba(155,109,255,.12);--ao:#F59E42;--aod:rgba(245,158,66,.12);--ak:#E84393;--akd:rgba(232,67,147,.12);--ac:#00CEC9;--acd:rgba(0,206,201,.12);--t1:#E4E8F1;--t2:#A0A8BE;--t3:#4A526A}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:var(--ag) var(--bg)}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--t1);overflow-x:hidden;line-height:2}
+
+.cosmos{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.cosmos .orb{position:absolute;border-radius:50%;filter:blur(140px);animation:oF 22s ease-in-out infinite}
+.o1{width:500px;height:500px;background:rgba(74,144,217,.07);top:-150px;right:-100px}
+.o2{width:400px;height:400px;background:rgba(45,212,168,.06);bottom:-50px;left:-50px;animation-delay:-8s}
+@keyframes oF{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-25px) scale(1.04)}66%{transform:translate(-15px,18px) scale(.96)}}
+canvas#stC{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:all .4s}
+nav.scrolled{background:rgba(8,11,20,.94);backdrop-filter:blur(18px);border-bottom:1px solid var(--gb)}
+.ni{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px;padding:0 1.5rem}
+.nl{display:flex;align-items:center;gap:.6rem;font-weight:900;font-size:1.1rem;color:var(--ag);cursor:pointer}
+.nl .lb{width:34px;height:34px;background:linear-gradient(135deg,var(--ag),var(--at));border-radius:8px;display:flex;align-items:center;justify-content:center;color:#080B14;font-weight:900;font-size:.8rem}
+.nk{display:flex;gap:0;list-style:none;overflow-x:auto}
+.nk a{color:var(--t3);text-decoration:none;font-size:.85rem;font-weight:700;padding:.5rem .75rem;border-radius:6px;transition:all .3s;white-space:nowrap;position:relative;cursor:pointer}
+.nk a:hover,.nk a.act{color:var(--t1)}
+.nk a.act::after{content:'';position:absolute;bottom:0;left:20%;right:20%;height:2px;background:var(--ag);border-radius:2px}
+.nk .hi{display:flex;align-items:center;padding:.5rem}
+.nk .hi svg{width:20px;height:20px;stroke:var(--t3);transition:stroke .3s}
+.nk .hi:hover svg,.nk .hi.act svg{stroke:var(--ag)}
+.nc{font-size:.75rem;color:var(--ag);font-weight:800;padding:.3rem .7rem;background:var(--agd);border-radius:4px}
+.mt{display:none;background:none;border:none;color:var(--t1);font-size:1.5rem;cursor:pointer}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;padding:5rem 2rem 3rem}
+.hc{text-align:center;max-width:1000px;width:100%}
+.hu{font-size:1rem;color:var(--t2);margin-bottom:.5rem;display:flex;align-items:center;justify-content:center;gap:.5rem}
+.hcr{font-size:.95rem;color:var(--ag);margin-bottom:2rem}
+.hl{width:50px;height:3px;background:var(--t3);margin:0 auto 1.5rem;border-radius:3px}
+.hero h1{font-size:clamp(2.2rem,5.5vw,4rem);font-weight:900;line-height:1.35;margin-bottom:.75rem;color:var(--ag)}
+.hero h2{font-size:1.3rem;font-weight:400;color:var(--at);margin-bottom:2.5rem;letter-spacing:.04em}
+.ib{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2.5rem;max-width:650px;margin-left:auto;margin-right:auto}
+.ibx{background:var(--cd);border:1px solid var(--gb);border-radius:14px;padding:1.3rem 1rem;text-align:center}
+.ibx .il{font-size:.85rem;color:var(--t3);margin-bottom:.3rem}
+.ibx .iv{font-size:1.1rem;font-weight:800;margin-bottom:.2rem}
+.ibx .is{font-size:.82rem;color:var(--t2)}
+.ibx .iv.gd{color:var(--ag)}
+.hd{font-size:1.1rem;color:var(--t2);max-width:750px;margin:0 auto 3rem;line-height:2.2}
+
+/* SECTION CARDS */
+.sc{display:grid;grid-template-columns:repeat(2,1fr);gap:1.3rem;max-width:960px;margin:0 auto;padding:0 1rem}
+.sca{background:var(--cd);border:1px solid var(--gb);border-radius:16px;padding:1.7rem;cursor:pointer;transition:all .4s;position:relative;overflow:hidden;text-decoration:none;color:inherit;display:flex;flex-direction:column}
+.sca::before{content:'';position:absolute;top:0;bottom:0;right:0;width:4px;border-radius:0 4px 4px 0;transition:width .4s}
+.sca:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.1);box-shadow:0 16px 50px rgba(0,0,0,.4)}
+.sca .ct{display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem}
+.sca .cn{font-size:.8rem;font-weight:700;color:var(--t3)}
+.sca .ci{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+.sca .ci svg{width:20px;height:20px}
+.sca h3{font-size:1.2rem;font-weight:800;margin-bottom:.5rem;line-height:1.5}
+.sca .cdd{font-size:.92rem;color:var(--t2);line-height:1.9;margin-bottom:.8rem;flex:1}
+.sca .cs{display:flex;align-items:center;gap:.4rem;font-size:.85rem;color:var(--t3);border-top:1px solid var(--gb);padding-top:.7rem}
+.sca .cs svg{width:14px;height:14px;opacity:.5}
+.sca .cs span{font-weight:700;color:var(--t2)}
+
+.sca[data-s="1"]::before{background:var(--ab)}.sca[data-s="1"] .ci{background:var(--abd)}.sca[data-s="1"] .ci svg{stroke:var(--ab)}
+.sca[data-s="2"]::before{background:var(--at)}.sca[data-s="2"] .ci{background:var(--atd)}.sca[data-s="2"] .ci svg{stroke:var(--at)}
+.sca[data-s="3"]::before{background:var(--ap)}.sca[data-s="3"] .ci{background:var(--apd)}.sca[data-s="3"] .ci svg{stroke:var(--ap)}
+.sca[data-s="4"]::before{background:var(--ao)}.sca[data-s="4"] .ci{background:var(--aod)}.sca[data-s="4"] .ci svg{stroke:var(--ao)}
+.sca[data-s="5"]::before{background:var(--ak)}.sca[data-s="5"] .ci{background:var(--akd)}.sca[data-s="5"] .ci svg{stroke:var(--ak)}
+.sca[data-s="6"]::before{background:var(--ac)}.sca[data-s="6"] .ci{background:var(--acd)}.sca[data-s="6"] .ci svg{stroke:var(--ac)}
+
+/* CONTENT PAGES */
+.cs0{position:relative;z-index:1;padding:5rem 2rem 3rem;max-width:1200px;margin:0 auto}
+.sb{display:inline-flex;align-items:center;gap:.5rem;color:var(--t3);font-size:1rem;font-weight:700;margin-bottom:1.5rem;cursor:pointer;background:none;border:none;font-family:'Tajawal';transition:color .3s}
+.sb:hover{color:var(--ag)}
+.sb svg{width:18px;height:18px}
+.sbg{display:inline-flex;padding:.4rem 1rem;border-radius:50px;font-size:.85rem;font-weight:800;margin-bottom:.8rem}
+.stt{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;line-height:1.4;margin-bottom:.6rem}
+.sst{font-size:1rem;color:var(--t3);display:flex;align-items:center;gap:.4rem}
+.sst svg{width:16px;height:16px;opacity:.5}
+.sst span{font-weight:700;color:var(--t2)}
+
+/* Sub-headings: 30px */
+.sec-sub{font-size:30px;font-weight:800;margin:2.5rem 0 1.5rem;display:flex;align-items:center;gap:.6rem;line-height:1.5}
+.sec-sub svg{width:26px;height:26px;flex-shrink:0}
+
+/* Intro box */
+.intro-box{background:var(--cd);border:1px solid var(--gb);border-radius:18px;padding:2.5rem;margin-bottom:2.5rem}
+.intro-box p{font-size:26px;color:var(--t2);line-height:2.2}
+
+/* SVG illustration */
+.sec-illust{display:flex;justify-content:center;margin:2rem 0 2.5rem}
+.sec-illust svg{max-width:100%;height:auto}
+
+/* Inner cards */
+.ig{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem;margin-top:1.5rem}
+.ic{background:var(--cd);border:1px solid var(--gb);border-radius:18px;padding:2.25rem;transition:all .4s}
+.ic:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.08);box-shadow:0 12px 40px rgba(0,0,0,.35)}
+.ic .ii{width:60px;height:60px;border-radius:15px;display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem}
+.ic .ii svg{width:30px;height:30px}
+.ic h3{font-size:30px;font-weight:800;margin-bottom:.75rem;line-height:1.5}
+.ic p{font-size:26px;color:var(--t2);line-height:2.2}
+
+/* Comparison */
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1.5rem}
+.cc{background:var(--cd);border:1px solid var(--gb);border-radius:18px;padding:2rem}
+.cc .tg{display:inline-block;font-size:.82rem;font-weight:800;padding:.3rem .9rem;border-radius:50px;margin-bottom:1rem}
+.cc.lxd .tg{background:rgba(45,212,168,.1);color:var(--at);border:1px solid rgba(45,212,168,.2)}
+.cc.oth .tg{background:rgba(232,67,147,.1);color:var(--ak);border:1px solid rgba(232,67,147,.2)}
+.cc h4{font-size:30px;font-weight:800;margin-bottom:.75rem;line-height:1.5}
+.cc p{font-size:26px;color:var(--t2);line-height:2.2}
+
+/* Flow items */
+.fi{display:flex;gap:1.5rem;align-items:flex-start;background:var(--cd);border:1px solid var(--gb);border-radius:18px;padding:2rem;margin-bottom:1.25rem;transition:all .4s}
+.fi:hover{transform:translateX(-4px);border-color:rgba(255,255,255,.08)}
+.fn{font-size:3rem;font-weight:900;line-height:1;min-width:50px;opacity:.18}
+.fi h3{font-size:30px;font-weight:800;margin-bottom:.6rem;line-height:1.5}
+.fi p{font-size:26px;color:var(--t2);line-height:2.2}
+
+/* From/To */
+.fto{display:grid;grid-template-columns:1fr auto 1fr;gap:1.5rem;align-items:start;margin-top:1.5rem}
+.ftb{background:var(--cd);border:1px solid var(--gb);border-radius:18px;padding:2rem}
+.ftb h4{font-size:28px;font-weight:800;margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem;line-height:1.5}
+.ftb p{font-size:26px;color:var(--t2);line-height:2.2}
+.fta{display:flex;align-items:center;padding-top:3rem;color:var(--at)}
+
+/* Integration */
+.intb{background:var(--cd);border:1px solid var(--gb);border-radius:18px;padding:2.5rem;text-align:center;margin-top:2rem;position:relative;overflow:hidden}
+.intb::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent,rgba(45,212,168,.015),transparent,rgba(212,168,71,.015),transparent);animation:rG 18s linear infinite}
+@keyframes rG{to{transform:rotate(360deg)}}
+.intb>*{position:relative;z-index:1}
+.intb h3{font-size:30px;font-weight:800;margin-bottom:1rem;line-height:1.5}
+.intb p{font-size:26px;color:var(--t2);line-height:2.2;max-width:900px;margin:0 auto}
+.intt{display:flex;flex-wrap:wrap;justify-content:center;gap:.7rem;margin-top:1.5rem}
+.intt span{background:rgba(155,109,255,.07);border:1px solid rgba(155,109,255,.15);padding:.5rem 1.2rem;border-radius:50px;font-size:1rem;color:var(--ap);font-weight:700;transition:all .3s}
+.intt span:hover{transform:scale(1.05)}
+
+/* Quadrant */
+.qg{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;position:relative}
+.qg::before{content:'LXD';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:1rem;font-weight:900;color:var(--ag);background:var(--bg);width:64px;height:64px;display:flex;align-items:center;justify-content:center;border-radius:50%;z-index:2;border:2px solid var(--ag);box-shadow:0 0 25px var(--agd)}
+
+/* Phases */
+.pc{position:relative;padding-right:55px}
+.plv{position:absolute;right:26px;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--ak),var(--ao),var(--ac));border-radius:3px}
+.pi{position:relative;margin-bottom:1.75rem}
+.pdd{position:absolute;right:-38px;top:2rem;width:16px;height:16px;border-radius:50%;background:var(--bg);border:3px solid;z-index:2}
+.pdd::after{content:'';position:absolute;inset:2px;border-radius:50%}
+.pk{background:var(--cd);border:1px solid var(--gb);border-radius:18px;padding:2rem;transition:all .4s}
+.pk:hover{transform:translateX(-4px);border-color:rgba(255,255,255,.08)}
+.pk .pn{font-size:.8rem;font-weight:800;margin-bottom:.5rem;letter-spacing:.1em}
+.pk h3{font-size:30px;font-weight:800;margin-bottom:.6rem;display:flex;align-items:center;gap:.6rem;line-height:1.5}
+.pk h3 svg{width:22px;height:22px;flex-shrink:0}
+.pk p{font-size:26px;color:var(--t2);line-height:2.2}
+
+/* Competencies */
+.cpg{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:1.25rem}
+.cpi{background:var(--cd);border:1px solid var(--gb);border-radius:16px;padding:1.75rem;transition:all .4s;display:flex;gap:1rem;align-items:flex-start}
+.cpi:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.08)}
+.cpn{font-size:2rem;font-weight:900;min-width:35px;background:linear-gradient(135deg,var(--ac),var(--at));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.cpi h4{font-size:28px;font-weight:800;margin-bottom:.4rem;line-height:1.5}
+.cpi p{font-size:24px;color:var(--t2);line-height:2.1}
+
+/* Divider */
+.dvd{display:flex;align-items:center;gap:1rem;margin:3rem 0}
+.dvd .ln{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gb),transparent)}
+.dvd .dm{width:6px;height:6px;transform:rotate(45deg);opacity:.4}
+
+footer{position:relative;z-index:1;text-align:center;padding:3rem 2rem;border-top:1px solid var(--gb);color:var(--t3);font-size:.9rem}
+footer .cr{margin-top:.3rem;color:var(--t2);font-weight:600}
+
+.rv{opacity:0;transform:translateY(30px);transition:all .65s cubic-bezier(.25,.46,.45,.94)}
+.rv.vis{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.06s}.d2{transition-delay:.12s}.d3{transition-delay:.18s}.d4{transition-delay:.24s}.d5{transition-delay:.3s}.d6{transition-delay:.36s}
+
+@media(max-width:900px){
+.nk{display:none}.nk.open{display:flex;flex-direction:column;position:absolute;top:60px;left:0;right:0;background:rgba(8,11,20,.97);backdrop-filter:blur(18px);padding:1rem;border-bottom:1px solid var(--gb)}
+.mt{display:block}.ib{grid-template-columns:1fr}.sc{grid-template-columns:1fr}.cg{grid-template-columns:1fr}.qg{grid-template-columns:1fr}.qg::before{display:none}
+.fto{grid-template-columns:1fr}.fta{justify-content:center;padding:0;transform:rotate(90deg)}.fi{flex-direction:column;gap:.5rem}
+.pc{padding-right:0}.plv,.pdd{display:none}.ig{grid-template-columns:1fr}
+.ic h3,.fi h3,.cc h4,.pk h3,.intb h3,.sec-sub{font-size:24px}
+.ic p,.fi p,.cc p,.pk p,.intro-box p,.intb p,.ftb p{font-size:20px}
+.cpi h4,.ftb h4{font-size:22px}
+.cpi p{font-size:19px}
+}
+</style>
+</head>
+<body>
+<div class="cosmos"><div class="orb o1"></div><div class="orb o2"></div></div>
+<canvas id="stC"></canvas>
+
+<nav id="mN"><div class="ni">
+<a class="nl" onclick="showHome()"><span class="lb">LX</span>أساسيات LXD</a>
+<button class="mt" onclick="document.querySelector('.nk').classList.toggle('open')">☰</button>
+<ul class="nk">
+<li><a class="hi act" onclick="showHome()" data-nav="home"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 12l9-9 9 9"/><path d="M5 10v10a1 1 0 001 1h3a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1h3a1 1 0 001-1V10"/></svg></a></li>
+<li><a onclick="showSection(1)" data-nav="1">المحور الأول</a></li>
+<li><a onclick="showSection(2)" data-nav="2">المحور الثاني</a></li>
+<li><a onclick="showSection(3)" data-nav="3">المحور الثالث</a></li>
+<li><a onclick="showSection(4)" data-nav="4">المحور الرابع</a></li>
+<li><a onclick="showSection(5)" data-nav="5">المحور الخامس</a></li>
+<li><a onclick="showSection(6)" data-nav="6">المحور السادس</a></li>
+</ul>
+<span class="nc" id="nC">الرئيسية</span>
+</div></nav>
+
+<!-- HOME -->
+<div id="hP"><section class="hero"><div class="hc">
+<div class="hu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>جامعة الملك خالد — كلية التربية</div>
+<div class="hcr">مقرر إنتاج المصادر الرقمية &nbsp;‹&nbsp; <strong>تقن 6108</strong></div>
+<div class="hl"></div>
+<h1>أساسيات تصميم خبرة التعلم</h1>
+<h2>Fundamentals of Learning Experience Design (LXD)</h2>
+<div class="ib">
+<div class="ibx"><div class="il">أستاذ المقرر</div><div class="iv gd">د. عامر محمد عامر</div><div class="is">كلية التربية — جامعة الملك خالد</div></div>
+<div class="ibx"><div class="il">تقديم</div><div class="iv">طلاب شعبة 294</div><div class="is">ماجستير تقنيات التعليم</div></div>
+</div>
+<p class="hd">رحلة معرفية في ستة محاور تكتشف كيف يردم تصميم خبرة التعلم الفجوة بين التصميم الإبداعي وميدان التعلم، ويضع المتعلم في قلب كل قرار تصميمي.</p>
+<div class="sc">
+<a class="sca rv d1" data-s="1" onclick="showSection(1)"><div class="ct"><span class="cn">المحور الأول</span><div class="ci"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="2"/></svg></div></div><h3>ما تصميم خبرة التعلم؟</h3><div class="cdd">التعريف الشامل — أركان الخبرة والتصميم والتعلم — المبادئ الأساسية: التمحور حول الإنسان والتوجه نحو الهدف</div><div class="cs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>طلال جماحي</span></div></a>
+<a class="sca rv d2" data-s="2" onclick="showSection(2)"><div class="ct"><span class="cn">المحور الثاني</span><div class="ci"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M16 3h5v5M4 20L21 3"/><path d="M21 16v5h-5M3 4l17 17" opacity=".5"/></svg></div></div><h3>كيف يختلف LXD عن غيره؟</h3><div class="cdd">مقارنة تفصيلية مع التصميم التعليمي (ID) وتصميم تجربة المستخدم (UXD) والتخصصات البينية الأخرى</div><div class="cs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>سلمان آل خشلان</span></div></a>
+<a class="sca rv d3" data-s="3" onclick="showSection(3)"><div class="ct"><span class="cn">المحور الثالث</span><div class="ci"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 2a7 7 0 017 7c0 5-7 13-7 13S5 14 5 9a7 7 0 017-7z"/><circle cx="12" cy="9" r="2.5" opacity=".5"/></svg></div></div><h3>ما هي خبرة التعلم؟</h3><div class="cdd">البنية الثلاثية للخبرة: الموقف والزمن والانطباع — من المعايشة العفوية إلى القصدية التصميمية</div><div class="cs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>فيصل أبو حسان</span></div></a>
+<a class="sca rv d4" data-s="4" onclick="showSection(4)"><div class="ct"><span class="cn">المحور الرابع</span><div class="ci"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5" opacity=".5"/></svg></div></div><h3>نشأة تصميم خبرة التعلم</h3><div class="cdd">المصفوفة الرباعية: التصميم الإنساني، التصميم الهادف، نظريات التعلم، والممارسة التطبيقية</div><div class="cs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>أحمد الحياني</span></div></a>
+<a class="sca rv d5" data-s="5" onclick="showSection(5)"><div class="ct"><span class="cn">المحور الخامس</span><div class="ci"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6 3" stroke-linecap="round"/></svg></div></div><h3>عملية تصميم خبرة التعلم</h3><div class="cdd">ست مراحل هيكلية: التأطير، الاستقصاء، التوليد الإبداعي، النمذجة، الاختبار، والمراجعة التكرارية</div><div class="cs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>عبدالعزيز آل علي</span></div></a>
+<a class="sca rv d6" data-s="6" onclick="showSection(6)"><div class="ct"><span class="cn">المحور السادس</span><div class="ci"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00-.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" opacity=".7"/></svg></div></div><h3>سمات مصمم خبرة التعلم</h3><div class="cdd">ثماني كفايات محورية: الإبداع، المزاوجة الفكرية، التحرر، التمركز حول المتعلم، وأكثر</div><div class="cs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>حامد القحطاني</span></div></a>
+</div></div></section></div>
+
+<!-- ═══ SEC 1 ═══ -->
+<div id="s1" class="cs0" style="display:none"><div class="sh"><button class="sb" onclick="showHome()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>العودة للرئيسية</button><div class="sbg" style="background:var(--abd);color:var(--ab);border:1px solid rgba(74,144,217,.25)">المحور الأول</div><h2 class="stt" style="color:var(--ab)">ما تصميم خبرة التعلم؟</h2><div class="sst"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>تقديم: <span>طلال جماحي</span></div></div>
+<div class="intro-box rv" style="border-right:3px solid var(--ab)"><p>يُعرّف «تصميم خبرة التعلم» بوصفه عملية منهجية وإبداعية تكاملية، تهدف إلى هندسة مسارات تعلمية تُمكن المتعلم من بلوغ النواتج المنشودة. يمثل هذا الحقل جسراً يربط بين التخصصات الإبداعية (كتصميم التفاعل، وتجربة المستخدم، والألعاب) والعلوم المعرفية (كالتربية، والتصميم التعليمي، وعلم النفس المعرفي، والتعلم الخِبراتي)، لإنتاج إطار شمولي يتجاوز طرائق التعليم التقليدية.</p></div>
+<div class="sec-sub rv" style="color:var(--ab)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--ab)" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>المكونات البنيوية لتصميم خبرة التعلم</div>
+<div class="ig">
+<div class="ic rv d1"><div class="ii" style="background:var(--akd)"><svg viewBox="0 0 32 32" fill="none" stroke="var(--ak)" stroke-width="1.8"><circle cx="16" cy="11" r="5"/><path d="M8 26c0-4.4 3.6-8 8-8s8 3.6 8 8"/><circle cx="16" cy="11" r="9" stroke-dasharray="3 3" opacity=".3"/></svg></div><h3 style="color:var(--ak)">الخِبْرة (المرتكز الوجداني والمعرفي)</h3><p>تُعد الخبرة المكون المحوري الذي تُستقى منه المعرفة. يتجاوز التصميم هنا حدود المحتوى الأكاديمي المجرد ليشمل مجمل التفاعلات والمواقف التي يمر بها المتعلم. وتتبنى هذه المقاربة نظرة شمولية تدمج بين «البعد المعرفي» و«البعد الانفعالي»، مستهدفةً تحويل المواقف (سواء كانت يومية عابرة أو استثنائية مخططة) إلى تجارب عميقة الأثر ترسخ في الذاكرة وتُحدث تحولاً في الأفكار والسلوكيات.</p></div>
+<div class="ic rv d2"><div class="ii" style="background:var(--abd)"><svg viewBox="0 0 32 32" fill="none" stroke="var(--ab)" stroke-width="1.8"><rect x="6" y="6" width="20" height="20" rx="3"/><circle cx="10" cy="10" r="2" fill="var(--ab)" stroke="none"/><path d="M18 10l-4 6 8 2" stroke-linejoin="round"/></svg></div><h3 style="color:var(--ab)">التصميم (المسار الإبداعي والتكراري)</h3><p>يُمثل التصميم في هذا السياق ممارسة تطبيقية تمزج بين «الوظيفية» و«الجمالية». لا يعتمد التصميم على مسار خطي جامد، بل ينتهج عملية استكشافية وتكرارية تشمل: البحث، وتوليد الأفكار، وبناء النماذج الأولية، والاختبار المستمر. يستلهم المصمم أدواته من الفنون المتنوعة (كالسرد القصصي والفن التفاعلي) لابتكار حلول أصيلة تناسب سياقات وشرائح مختلفة.</p></div>
+<div class="ic rv d3"><div class="ii" style="background:var(--atd)"><svg viewBox="0 0 32 32" fill="none" stroke="var(--at)" stroke-width="1.8"><path d="M16 4L4 10l12 6 12-6L16 4z"/><path d="M4 10v10l12 6 12-6V10" opacity=".35"/><path d="M16 16v10"/><circle cx="16" cy="20" r="2.5" fill="var(--at)" stroke="none" opacity=".7"/></svg></div><h3 style="color:var(--at)">التعلم (الغاية والناتج ذو المعنى)</h3><p>يستند هذا البعد نظرياً إلى «التعلم الخِبراتي»، حيث تتحول معالجة الخبرة الإنسانية إلى معرفة مكتسبة. في هذا الإطار، يُوضع «المتعلم» في المركز (عكس النماذج التقليدية التي تتمركز حول المعلم أو المؤسسة)، لضمان تحقيق نواتج تعلم مرغوبة تتسم بالصلة الوثيقة بواقع المتعلم، وتحمل قيمة ومعنى حقيقيين بالنسبة له.</p></div>
+</div>
+<div class="dvd"><div class="ln"></div><div class="dm" style="background:var(--ab)"></div><div class="ln"></div></div>
+<div class="sec-sub rv" style="color:var(--ag)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--ag)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>المرتكزات المنهجية الحاكمة</div>
+<div class="ig" style="grid-template-columns:repeat(auto-fit,minmax(420px,1fr))">
+<div class="ic rv d1"><div class="ii" style="background:var(--agd)"><svg viewBox="0 0 32 32" fill="none" stroke="var(--ag)" stroke-width="1.8"><circle cx="16" cy="13" r="6"/><path d="M16 19v4M12 27h8M13 23h6"/><circle cx="16" cy="13" r="10" stroke-dasharray="2 4" opacity=".2"/></svg></div><h3 style="color:var(--ag)">التمحور حول الإنسان</h3><p>مقاربة تنبثق من مبادئ تصميم تجربة المستخدم، وتقتضي التقصي العميق لاحتياجات المتعلمين، ودوافعهم، والتحديات التي تواجههم، عبر توظيف أدوات البحث التصميمي (الملاحظة السياقية، والمقابلات المتعمقة، والتصميم التشاركي)، مما يضمن بناء التعاطف وجعل المتعلم قلب العملية التصميمية.</p></div>
+<div class="ic rv d2"><div class="ii" style="background:var(--acd)"><svg viewBox="0 0 32 32" fill="none" stroke="var(--ac)" stroke-width="1.8"><circle cx="16" cy="16" r="12" stroke-dasharray="4 2" opacity=".25"/><circle cx="16" cy="16" r="7"/><circle cx="16" cy="16" r="2" fill="var(--ac)" stroke="none"/><path d="M16 9v-5M16 27v-4M23 16h4M5 16h4" stroke-linecap="round"/></svg></div><h3 style="color:var(--ac)">التوجه نحو الهدف</h3><p>مبدأ يضمن توجيه العملية الإبداعية نحو الغايات التعليمية الجوهرية بتركيز عالٍ، وتجنب التشتت بالتفاصيل الهامشية أو الاستخدام غير المبرر للتقنيات الحديثة، واعتبار التكنولوجيا مجرد «وسيلة» لخدمة نواتج التعلم المستهدفة وليست غاية في حد ذاتها.</p></div>
+</div></div>
+
+<!-- ═══ SEC 2 ═══ -->
+<div id="s2" class="cs0" style="display:none"><div class="sh"><button class="sb" onclick="showHome()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>العودة للرئيسية</button><div class="sbg" style="background:var(--atd);color:var(--at);border:1px solid rgba(45,212,168,.25)">المحور الثاني</div><h2 class="stt" style="color:var(--at)">كيف يختلف تصميم خبرة التعلم عن غيره؟</h2><div class="sst"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>تقديم: <span>سلمان آل خشلان</span></div></div>
+<div class="sec-sub rv" style="color:var(--at)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--at)" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>أولاً: التباين الجوهري مع التصميم التعليمي</div>
+<div class="cg rv">
+<div class="cc oth"><span class="tg">التصميم التعليمي</span><h4 style="color:var(--ak)">المسار الخطي المتدرج</h4><p>ينطلق التصميم التعليمي من تقاليد أكاديمية صارمة تستند إلى علوم الأعصاب وعلم النفس المعرفي، متبنياً مساراً خطياً متدرجاً وشديد البنية، يهدف بالأساس إلى النقل المباشر والفعال للمحتوى المعرفي للمتعلم ضمن النظم المدرسية والبرامج المقننة.</p></div>
+<div class="cc lxd"><span class="tg">تصميم خبرة التعلم</span><h4 style="color:var(--at)">المسار التكراري الاستكشافي</h4><p>في المقابل، ينبثق تصميم خبرة التعلم من التخصصات التصميمية الإبداعية، معتمداً مساراً تكرارياً استكشافياً يضع المتعلم في قلب عملية البحث التصميمي. وبدلاً من التركيز الحصري على نقل المعرفة، يسعى هذا المجال إلى صياغة أنشطة جذابة تترك أثراً وجدانياً ومعرفياً عميقاً في بيئات مرنة ومتنوعة.</p></div>
+</div>
+<div class="dvd"><div class="ln"></div><div class="dm" style="background:var(--at)"></div><div class="ln"></div></div>
+<div class="sec-sub rv" style="color:var(--ap)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--ap)" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>ثانياً: التمايز المنهجي عن تصميم تجربة المستخدم</div>
+<div class="intro-box rv" style="border-right:3px solid var(--ap)"><p>قد يُظن خطأً أن تصميم خبرة التعلم هو مجرد تطبيق لتصميم تجربة المستخدم في سياق تعليمي، إلا أن الفارق بين حاجات «المتعلم» و«المستخدم» يخلق تبايناً عميقاً.</p></div>
+<div class="cg rv">
+<div class="cc oth"><span class="tg">تصميم تجربة المستخدم</span><h4 style="color:var(--ak)">تجربة انسيابية خالية من الاحتكاك</h4><p>يركز تصميم تجربة المستخدم حصرياً على البيئات الرقمية، ساعياً لتوفير تجربة انسيابية خالية من الاحتكاك تتطلب أدنى جهد ممكن، ويُقاس نجاحها بمؤشرات إحصائية وتسويقية.</p></div>
+<div class="cc lxd"><span class="tg">تصميم خبرة التعلم</span><h4 style="color:var(--at)">تحدٍ مدروس واحتكاك إيجابي</h4><p>أما تصميم خبرة التعلم فيمتد ليشمل البيئات الشاملة (الرقمية، والفيزيائية، والمدمجة)، والأهم من ذلك أنه يتعمد إدخال جرعة مدروسة من «التحدي» والاحتكاك الإيجابي لحفز الجهد الذهني المطلوب لحدوث التعلم. ويُقاس نجاح هذه الخبرة بمدى تحقق النواتج السلوكية والمهارية، واستدامة الأثر الانفعالي بعيد المدى.</p></div>
+</div>
+<div class="dvd"><div class="ln"></div><div class="dm" style="background:var(--ao)"></div><div class="ln"></div></div>
+<div class="sec-sub rv" style="color:var(--ao)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--ao)" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg>ثالثاً: التكامل الخلاق مع التخصصات الرديفة</div>
+<div class="intb rv"><h3 style="color:var(--ao)">تآزر وظيفي يفوق مجموع أجزائه</h3><p>لا ينعزل هذا التخصص عن محيطه، بل يتقاطع عضوياً مع مجالات تصميمية حيوية أخرى. ولا يُعد هذا التقاطع تجميعاً عشوائياً، بل هو تآزر وظيفي ينتج كياناً معرفياً يفوق مجموع أجزائه. وتتجلى أفضل تطبيقات هذا التآزر في ابتكار ما يُعرف بـ «الألعاب الجادة»، التي تمثل ثمرة التزاوج بين تصميم الألعاب وعلوم التعلم؛ إذ تخرج عن كونها وسيلة ترفيهية محضة أو أداة تلقين جامدة، لتصبح وعاءً تفاعلياً يمزج التشويق بالبناء المعرفي العميق.</p><div class="intt"><span>التفكير التصميمي</span><span>تصميم التفاعل</span><span>تصميم الخدمات</span><span>تصميم الألعاب</span><span>الألعاب الجادة</span></div></div></div>
+
+<!-- ═══ SEC 3 ═══ -->
+<div id="s3" class="cs0" style="display:none"><div class="sh"><button class="sb" onclick="showHome()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>العودة للرئيسية</button><div class="sbg" style="background:var(--apd);color:var(--ap);border:1px solid rgba(155,109,255,.25)">المحور الثالث</div><h2 class="stt" style="color:var(--ap)">ما هي خبرة التعلم؟</h2><div class="sst"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>تقديم: <span>فيصل أبو حسان</span></div></div>
+<div class="intro-box rv" style="border-right:3px solid var(--ap)"><p>يمثل الفهم العميق لمفهوم «الخبرة» المدخل الحتمي لمجال تصميم خبرة التعلم؛ إذ تُعرّف هذه الخبرة بوصفها كياناً كلياً يُهندس بوعي وعناية فائقة، بغية تمكين المتعلم من بلوغ نواتج ذات معنى وقيمة محددة سلفاً. وتُعرّف الخبرة في أوسع نطاقاتها بأنها: أي موقف يعايشه الإنسان، ويستغرق حيزاً من الزمن، مخلّفاً وراءه أثراً ملموساً.</p></div>
+<div class="sec-sub rv" style="color:var(--ap)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--ap)" stroke-width="2"><path d="M12 2a7 7 0 017 7c0 5-7 13-7 13S5 14 5 9a7 7 0 017-7z"/><circle cx="12" cy="9" r="2.5"/></svg>أولاً: البنية الثلاثية للخبرة الإنسانية</div>
+<div class="fi rv d1"><div class="fn">١</div><div><h3 style="color:var(--ao)">الموقف (السياق الحاضن)</h3><p>يمثل الموقف الإطار الظرفي والمكاني الذي تتبلور فيه الخبرة. إن للفضاء المحيط والظروف المصاحبة أثراً جذرياً في تشكيل الإدراك؛ فالفعل الواحد (كالقراءة مثلاً) تتغير استجابة الإنسان له كلياً باختلاف سياقه، مما يجعل دراسة البيئة المحيطة بالمتعلم خطوة لا غنى عنها في العملية التصميمية.</p></div></div>
+<div class="fi rv d2"><div class="fn">٢</div><div><h3 style="color:var(--ab)">الامتداد الزمني والإدراك الانفعالي</h3><p>لا تنعقد خبرة خارج حدود الزمن، فلكل مسار بداية ونهاية يسهل عادةً استدعاؤهما من الذاكرة، بينما تقع على عاتق المصمم مسؤولية إبقاء «الجزء الأوسط» حاضراً ومؤثراً. ونظراً لكون الإحساس بالزمن أمراً نسبياً تحكمه الانفعالات (كالاستمتاع الذي يطوي الوقت، أو الملل الذي يمدده)، يتحتم على المصمم ضمان تفوق العوائد المعرفية والوجدانية المتحققة على كلفة الوقت المستثمر من قِبل المتعلم.</p></div></div>
+<div class="fi rv d3"><div class="fn">٣</div><div><h3 style="color:var(--ac)">الانطباع (الأثر المتبقي)</h3><p>هو الخلاصة المترسبة في الذاكرة بعد انقضاء الموقف. تتسم الانطباعات بالذاتية الشديدة؛ فما يبدو حدثاً عابراً لطرف قد يشكل تحولاً جذرياً لا يُنسى لطرف آخر. وتتراوح هذه الآثار بين الإيجابية والسلبية، حيث يمكن توظيف حتى الخبرات الشاقة أو المؤلمة لتصبح وقوداً دافعاً لاكتساب دروس عميقة ومستدامة.</p></div></div>
+<div class="dvd"><div class="ln"></div><div class="dm" style="background:var(--ap)"></div><div class="ln"></div></div>
+<div class="sec-sub rv" style="color:var(--at)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--at)" stroke-width="2"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14"/></svg>ثانياً: من المعايشة العفوية إلى القصدية التصميمية</div>
+<div class="fto rv">
+<div class="ftb"><h4><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--ak)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 16s1.5-2 3-2 3 2 3 2" stroke-linecap="round"/><path d="M9 9h.01M15 9h.01"/></svg><span style="color:var(--ak)">قصور المقاربة التقليدية</span></h4><p>عندما ينحصر التركيز في تقديم المحتوى وتنظيمه بمعزل عن التجربة الكلية، يصبح التعلم مجرد ناتج عرضي تكتنفه العشوائية. يؤدي إغفال التساؤلات المحورية (كمدى ملاءمة التصميم لواقع المتعلم، وطبيعة مشاعره أثناء التجربة) إلى فقدان السيطرة على مخرجات التعلم، مما يولد تفاوتاً حاداً بين مستويات التفاعل والإحباط لدى المتعلمين.</p></div>
+<div class="fta"><svg viewBox="0 0 40 40" width="40" fill="none"><path d="M30 20H10M17 13l-7 7 7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+<div class="ftb" style="border-color:rgba(45,212,168,.15)"><h4><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--at)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2" stroke-linecap="round"/><path d="M9 9h.01M15 9h.01"/></svg><span style="color:var(--at)">شمولية الرحلة المصممة</span></h4><p>في المقابل، تتجاوز خبرة التعلم المصممة حدود المحتوى المعرفي لتصبح «رحلة شخصية متكاملة» تستوعب كل ما يفعله المتعلم، وما يفكر فيه، وما يعتريه من مشاعر، منذ لحظة التماس الأولى وحتى ما بعد الانتهاء. هذا المزج الدقيق بين الأبعاد المعرفية، والانفعالية، والجسدية، والظرفية، يفتح أمام المحترفين آفاقاً لا نهائية من الحرية الإبداعية لابتكار مسارات تعلم استثنائية.</p></div>
+</div></div>
+
+<!-- ═══ SEC 4 ═══ -->
+<div id="s4" class="cs0" style="display:none"><div class="sh"><button class="sb" onclick="showHome()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>العودة للرئيسية</button><div class="sbg" style="background:var(--aod);color:var(--ao);border:1px solid rgba(245,158,66,.25)">المحور الرابع</div><h2 class="stt" style="color:var(--ao)">نشأة تصميم خبرة التعلم</h2><div class="sst"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>تقديم: <span>أحمد الحياني</span></div></div>
+<div class="intro-box rv" style="border-right:3px solid var(--ao)"><p>يتأسس تصميم خبرة التعلم على مصفوفة رباعية الأبعاد تجسد نقطة التقاء العمق المعرفي لعلوم التعلم مع الممارسة الإبداعية للتصميم. وتشكل هذه الأرباع الروافد العلمية والمهنية التي تمنح هذا التخصص هويته التكاملية، وتوجه منهجيته التطبيقية.</p></div>
+<div class="sec-sub rv" style="color:var(--ao)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--ao)" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>المصفوفة الرباعية</div>
+<div class="qg">
+<div class="ic rv d1"><div class="ii" style="background:var(--akd)"><svg viewBox="0 0 28 28" fill="none" stroke="var(--ak)" stroke-width="1.6"><path d="M14 4C8.5 4 4 8.5 4 14s4.5 10 10 10 10-4.5 10-10"/><circle cx="14" cy="14" r="4"/></svg></div><h3 style="color:var(--ak)">أولاً: التصميم المتمحور حول الإنسان</h3><p>البعد الوجداني والتفاعلي — يحتضن هذا الربع التخصصات التصميمية المعنية بجودة الخبرة الإنسانية. ويرتكز منهجه على جعل المتعلم النواة المركزية للعملية التصميمية عبر الاستيعاب الدقيق لمنظوره، ودراسة الخيارات المتاحة أمامه، والقرارات التي يتخذها. يهدف إلى صياغة مسارات تعلمية تتصل بالمتعلم على مستويات عميقة ومتداخلة تجمع بين الجوانب الشخصية، والمعرفية، والانفعالية.</p></div>
+<div class="ic rv d2"><div class="ii" style="background:var(--abd)"><svg viewBox="0 0 28 28" fill="none" stroke="var(--ab)" stroke-width="1.6"><rect x="4" y="4" width="20" height="20" rx="4"/><circle cx="14" cy="10" r="3"/><path d="M10 18h8" stroke-linecap="round"/></svg></div><h3 style="color:var(--ab)">ثانياً: التصميم الموجه نحو الهدف</h3><p>البعد الوظيفي والجمالي — يشمل هذا الربع التخصصات التي تبتكر منتجات تلبي غايات محددة بوضوح، عبر مزج محكم بين الأداء الوظيفي والقيمة الجمالية. وينطلق من منهجية تسعى لإشباع حاجات المتعلم ورغباته بفاعلية، مع التركيز على كيفية توظيف الأدوات والخدمات المتاحة لضمان بلوغ نواتج التعلم المرغوبة دون تشتت في تفاصيل هامشية.</p></div>
+<div class="ic rv d3"><div class="ii" style="background:var(--atd)"><svg viewBox="0 0 28 28" fill="none" stroke="var(--at)" stroke-width="1.6"><path d="M14 4l-8 5v10l8 5 8-5V9l-8-5z"/><path d="M14 14v10M6 9l8 5 8-5" opacity=".4"/><circle cx="14" cy="14" r="2" fill="var(--at)" stroke="none"/></svg></div><h3 style="color:var(--at)">ثالثاً: نظريات التعلم</h3><p>البعد المعرفي والعصبي — يمثل هذا الربع حجر الأساس العلمي الذي يفسر آليات الإدراك واكتساب المعرفة، مستمداً قواعده من علوم حيوية ونفسية كعلم النفس المعرفي، وعلوم الأعصاب، ونظريات التعلم الخِبراتي. ويُعد الاستيعاب المعمق لهذا الربع متطلباً حتمياً للمصمم؛ لكي يفهم بدقة كيف يعالج الدماغ البشري الخبرات المتنوعة ويحولها إلى تعلم راسخ ومستدام.</p></div>
+<div class="ic rv d4"><div class="ii" style="background:var(--agd)"><svg viewBox="0 0 28 28" fill="none" stroke="var(--ag)" stroke-width="1.6"><path d="M4 20l6-6 4 4 6-8 4 4"/><rect x="4" y="4" width="20" height="20" rx="3" opacity=".3"/></svg></div><h3 style="color:var(--ag)">رابعاً: الممارسة التطبيقية</h3><p>البعد الميداني والاختباري — هو الفضاء الذي يتحول فيه التنظير إلى واقع ملموس على أيدي الممارسين والمختصين التربويين. يؤكد هذا الربع على أهمية التزاوج التام بين الفهم النظري والتطبيق الميداني لصناعة خبرات فاعلة في سياقات الحياة الواقعية. ويُبرز ضرورة إخضاع النماذج التصميمية للاختبار المستمر مع متعلمين حقيقيين؛ بغية تقييم فاعليتها، ورصد التحديات، ورفع احتمالات نجاحها قبل إطلاقها النهائي.</p></div>
+</div>
+<div class="intb rv" style="margin-top:2rem;text-align:right"><h3 style="color:var(--ag)">خلاصة تكاملية</h3><p>عندما تتضافر أبعاد هذه المصفوفة الرباعية، تتجلى الرؤية الشاملة لتصميم خبرة التعلم بوصفه حقلاً استثنائياً؛ ينتقي بعناية أفضل الرؤى والممارسات من كل تخصص، ليعيد صهرها وتشكيلها في إطار إبداعي موحد يخدم غاية التعلم الأسمى ويفوق في أثره مجموع أجزائه المنفصلة.</p></div></div>
+
+<!-- ═══ SEC 5 ═══ -->
+<div id="s5" class="cs0" style="display:none"><div class="sh"><button class="sb" onclick="showHome()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>العودة للرئيسية</button><div class="sbg" style="background:var(--akd);color:var(--ak);border:1px solid rgba(232,67,147,.25)">المحور الخامس</div><h2 class="stt" style="color:var(--ak)">عملية تصميم خبرة التعلم</h2><div class="sst"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>تقديم: <span>عبدالعزيز آل علي</span></div></div>
+<div class="intro-box rv" style="border-right:3px solid var(--ak)"><p>تتسم هندسة خبرة التعلم بطبيعة مرنة واستكشافية تتجاوز المسارات الخطية التقليدية، لتفسح المجال أمام الابتكار والمفاجآت المعرفية. ورغم هذه المرونة الحيوية، يمكن تأطير العملية الإبداعية ضمن ست مراحل هيكلية متكاملة تشكل بوصلة الإنجاز:</p></div>
+<div class="pc"><div class="plv"></div>
+<div class="pi rv d1"><div class="pdd" style="border-color:var(--ak)"><div style="position:absolute;inset:2px;border-radius:50%;background:var(--ak)"></div></div><div class="pk"><div class="pn" style="color:var(--ak)">المرحلة الأولى</div><h3 style="color:var(--ak)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--ak)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>التأطير وصياغة التساؤل الجوهري</h3><p>تنطلق العملية من تحديد دقيق لمشكلة تستدعي معالجة، أو تساؤل محوري يحتاج إلى تفكيك (مثل: كيف يمكن ترسيخ العادات الصحية لدى اليافعين؟). ولأن البدايات غالباً ما تكتنفها الضبابية، فإن الغوص نحو الجذور وصياغة التساؤل بدقة متناهية يمنح المصمم انطلاقة راسخة تحدد مسار المشروع بأسره.</p></div></div>
+<div class="pi rv d2"><div class="pdd" style="border-color:var(--at)"><div style="position:absolute;inset:2px;border-radius:50%;background:var(--at)"></div></div><div class="pk"><div class="pn" style="color:var(--at)">المرحلة الثانية</div><h3 style="color:var(--at)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--at)" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>الاستقصاء والبحث الميداني</h3><p>تسبق هذه المرحلة أي تدخل تصميمي، وتتركز في مسارين متوازيين؛ الأول: الفهم المعمق لخصائص المتعلم ودوافعه عبر أدوات البحث النوعي كالملاحظة والمقابلات. والثاني: التحديد الدقيق لناتج التعلم المنشود، بوصفه الأثر الإيجابي المستدام في واقع المتعلم، والذي تُشتق منه الأهداف التعليمية الفرعية.</p></div></div>
+<div class="pi rv d3"><div class="pdd" style="border-color:var(--ag)"><div style="position:absolute;inset:2px;border-radius:50%;background:var(--ag)"></div></div><div class="pk"><div class="pn" style="color:var(--ag)">المرحلة الثالثة</div><h3 style="color:var(--ag)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--ag)" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>التوليد الإبداعي والتصور التصميمي</h3><p>تُمثل هذه المرحلة فضاءً حراً للابتكار، تبدأ بجلسات عصف ذهني موسعة تستقطب رؤى متباينة لإثراء المخرجات. تتبلور إثر ذلك الأفكار المجردة إلى تصورات تصميمية ملموسة، تتباين آلياتها جذرياً تبعاً لطبيعة الخبرة المستهدفة (سواء كانت بيئة رقمية، أو مكانية، أو قائمة على اللعب).</p></div></div>
+<div class="pi rv d1"><div class="pdd" style="border-color:var(--ap)"><div style="position:absolute;inset:2px;border-radius:50%;background:var(--ap)"></div></div><div class="pk"><div class="pn" style="color:var(--ap)">المرحلة الرابعة</div><h3 style="color:var(--ap)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--ap)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>النمذجة الأولية والتطوير</h3><p>تنتقل التصورات في هذه المرحلة من حيز الفكرة إلى حيز التجسيد عبر بناء نماذج أولية قابلة للتجربة. تتدرج هذه النماذج في تعقيدها من المسودات الورقية المبسطة إلى النماذج التقنية التفاعلية بالكامل، ويُحكم هذا التدرج بطبيعة الخبرة والاحتياج الفعلي للاختبار الفوري.</p></div></div>
+<div class="pi rv d2"><div class="pdd" style="border-color:var(--ao)"><div style="position:absolute;inset:2px;border-radius:50%;background:var(--ao)"></div></div><div class="pk"><div class="pn" style="color:var(--ao)">المرحلة الخامسة</div><h3 style="color:var(--ao)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--ao)" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>الاختبار الميداني والتقويم التكويني</h3><p>يُخضع النموذج الأولي للتجربة الحقيقية لرصد مدى تحقق نواتج التعلم المستهدفة، وقياس مستوى جاذبية التصميم وتفاعل المتعلمين معه. يتطلب ذلك إعداداً مسبقاً ومحكماً لجلسات الاختبار، يتضمن تحديداً صارماً لمتغيرات القياس، وصياغة لمهام وتساؤلات توجه للمتعلم أثناء معايشته للخبرة.</p></div></div>
+<div class="pi rv d3"><div class="pdd" style="border-color:var(--ac)"><div style="position:absolute;inset:2px;border-radius:50%;background:var(--ac)"></div></div><div class="pk"><div class="pn" style="color:var(--ac)">المرحلة السادسة</div><h3 style="color:var(--ac)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--ac)" stroke-width="2"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>المراجعة التكرارية والإطلاق النهائي</h3><p>نظراً لندرة الوصول إلى المثالية من المحاولة الأولى، تُشكل مخرجات الاختبار تغذية راجعة حتمية تقود إلى دورات متكررة من التحسين؛ سواء بتعديل النموذج، أو توسيع دائرة البحث، أو حتى مراجعة التساؤل التأسيسي. وتستمر هذه الدورة الاستكشافية حتى يبلغ التصميم مستوى عالياً من النضج والرضا، ليتوج أخيراً بالإطلاق والاعتماد.</p></div></div>
+</div></div>
+
+<!-- ═══ SEC 6 ═══ -->
+<div id="s6" class="cs0" style="display:none"><div class="sh"><button class="sb" onclick="showHome()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>العودة للرئيسية</button><div class="sbg" style="background:var(--acd);color:var(--ac);border:1px solid rgba(0,206,201,.25)">المحور السادس</div><h2 class="stt" style="color:var(--ac)">سمات مصمم خبرة التعلم</h2><div class="sst"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>تقديم: <span>حامد القحطاني</span></div></div>
+<div class="intro-box rv" style="border-right:3px solid var(--ac)"><p>يُعرّف مصمم خبرة التعلم بوصفه محترفاً يدمج أدوات التصميم ومهاراته لهندسة مسارات تمكن الأفراد من التعلم الفعال والعميق. ولتحقيق هذه الغاية، تتطلب الممارسة المهنية في هذا الحقل استبطان منظومة متكاملة من الكفايات والسمات، تتجلى في الأبعاد الآتية:</p></div>
+<div class="cpg">
+<div class="cpi rv"><div class="cpn">١</div><div><h4 style="color:var(--ak)">توظيف الإبداع كمحرك ديناميكي</h4><p>لا يقتصر الإبداع على شرارة البدء، بل يمثل تدفقاً مستمراً ووقوداً يغذي كافة مراحل العمل، لابتكار تصورات أصيلة وبلوغ الهيئة التصميمية المثلى.</p></div></div>
+<div class="cpi rv"><div class="cpn">٢</div><div><h4 style="color:var(--ab)">المزاوجة بين العقلية التحليلية والملكة الإبداعية</h4><p>تقتضي الممارسة التصميمية تنقلاً مرناً بين أنماط التفكير المتباينة؛ مما يمنح المصمم قدرة فائقة على التكيف واستثمار المزايا المزدوجة للتحليل الدقيق والابتكار الحر خلال أطوار البحث والإنشاء والاختبار.</p></div></div>
+<div class="cpi rv"><div class="cpn">٣</div><div><h4 style="color:var(--ap)">التحرر من القوالب النمطية الموروثة</h4><p>يتطلب هذا الميدان تجاوز التصورات المسبقة التي رسختها النظم المدرسية والتدريبية التقليدية، واستثمار المساحة الإبداعية بجرأة لهندسة مسارات وتجارب تعلمية فريدة وغير مسبوقة.</p></div></div>
+<div class="cpi rv"><div class="cpn">٤</div><div><h4 style="color:var(--at)">التمركز المطلق حول المتعلم</h4><p>يمثل التعاطف مع المتعلم وفهم دوافعه حجر الزاوية في بناء خبرات وثيقة الصلة بواقعه؛ إذ ينطلق التصميم من مبدأ راسخ يعتبر المتعلم المحور الأهم في المنظومة بأسرها.</p></div></div>
+<div class="cpi rv"><div class="cpn">٥</div><div><h4 style="color:var(--ao)">استدماج الرؤى العلمية والعصبية</h4><p>يرتكز التصميم الرصين على فهم عميق لآليات الإدراك وعمل الدماغ الإنساني؛ مما يحتم على المصمم التعاون المستمر مع الباحثين وتوظيف مخرجات العلوم المعرفية لضمان فاعلية المعالجات التعليمية.</p></div></div>
+<div class="cpi rv"><div class="cpn">٦</div><div><h4 style="color:var(--ag)">الموازنة بين سعة الخيال وواقعية التطبيق</h4><p>يسعى المصمم الماهر لكسر الحدود المألوفة وابتكار حلول أنيقة للمعضلات المعقدة، مع الاحتفاظ في الوقت ذاته بوعي عملي يضمن قابلية هذه الأفكار للتنفيذ الفعلي على أرض الواقع.</p></div></div>
+<div class="cpi rv"><div class="cpn">٧</div><div><h4 style="color:var(--ac)">الانتقاء الواعي للوسائط التقنية</h4><p>تُعد التكنولوجيا مجرد أداة خادمة لنواتج التعلم المرغوبة، ويجب ألا تتصدر المشهد لتتحول إلى غاية في ذاتها؛ فالتعلم يتمحور في جوهره حول الإنسان وغاياته، لا حول حداثة الأداة.</p></div></div>
+<div class="cpi rv"><div class="cpn">٨</div><div><h4 style="color:var(--ab)">المواءمة التوافقية بين الرؤى المتقاطعة</h4><p>يضطلع المصمم بدور جوهري في التنسيق بين تطلعات الأطراف المتعددة في مساحة العمل (كالمتعلمين، والعملاء، والمختصين، والمطورين)، لصياغة نقطة التقاء وظيفية تحقق المنفعة المشتركة وتلبي الأهداف الكبرى للمشروع.</p></div></div>
+</div></div>
+
+<footer><p>أساسيات تصميم خبرة التعلم — Fundamentals of Learning Experience Design</p><p class="cr">طلاب شعبة 294 &nbsp;|&nbsp; إشراف: د. عامر محمد عامر &nbsp;|&nbsp; جامعة الملك خالد — كلية التربية</p></footer>
+
+<script>
+(function(){const c=document.getElementById('stC'),x=c.getContext('2d');let s=[];function r(){c.width=innerWidth;c.height=innerHeight;s=[];const n=Math.floor(c.width*c.height/12000);for(let i=0;i<n;i++)s.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1+.3,a:Math.random()*.5+.08,sp:Math.random()*.003+.001,ph:Math.random()*Math.PI*2})}function d(t){x.clearRect(0,0,c.width,c.height);s.forEach(p=>{const a=p.a*(.5+.5*Math.sin(t*p.sp+p.ph));x.beginPath();x.arc(p.x,p.y,p.r,0,Math.PI*2);x.fillStyle=`rgba(180,195,230,${a})`;x.fill()});requestAnimationFrame(d)}addEventListener('resize',r);r();requestAnimationFrame(d)})();
+addEventListener('scroll',()=>document.getElementById('mN').classList.toggle('scrolled',scrollY>30));
+const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis')}),{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+function oA(){document.querySelectorAll('.rv').forEach(el=>{el.classList.remove('vis');obs.observe(el)})}oA();
+let cur='home';
+function uN(id){document.querySelectorAll('.nk a').forEach(a=>{a.classList.remove('act');if(a.dataset.nav===id)a.classList.add('act')});document.querySelector('.nk').classList.remove('open')}
+function showHome(){cur='home';document.getElementById('hP').style.display='';for(let i=1;i<=6;i++)document.getElementById('s'+i).style.display='none';uN('home');scrollTo({top:0,behavior:'smooth'});document.getElementById('nC').textContent='الرئيسية';setTimeout(oA,100)}
+function showSection(n){if(!n){showHome();return}cur=String(n);document.getElementById('hP').style.display='none';for(let i=1;i<=6;i++)document.getElementById('s'+i).style.display=i===n?'':'none';uN(String(n));scrollTo({top:0,behavior:'smooth'});const nm=['','المحور الأول','المحور الثاني','المحور الثالث','المحور الرابع','المحور الخامس','المحور السادس'];document.getElementById('nC').textContent=nm[n];setTimeout(oA,100)}
+document.addEventListener('keydown',e=>{const c2=cur==='home'?0:parseInt(cur);if(e.key==='ArrowLeft'&&c2<6)showSection(c2+1);else if(e.key==='ArrowRight'&&c2>0){c2===1?showHome():showSection(c2-1)}});
+</script>
+</body>
+</html>
